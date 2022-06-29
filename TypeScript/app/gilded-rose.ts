@@ -10,19 +10,18 @@ export class Item {
   }
 }
 
+enum Type {
+  Brie = 'Aged Brie',
+  Backstage = 'Backstage passes to a TAFKAL80ETC concert',
+  Sulfuras = 'Sulfuras, Hand of Ragnaros',
+  Conjured = 'Conjured'
+}
+
 export class GildedRose {
   items: Array<Item>;
 
   constructor(items = [] as Array<Item>) {
     this.items = items;
-  }
-
-  min(a: number, b: number) {
-    return (a < b) ? a : b;
-  }
-
-  max(a: number, b: number) {
-    return (a > b) ? a : b;
   }
 
   updateAgedBrie(item: Item) {
@@ -62,28 +61,28 @@ export class GildedRose {
   }
 
   updateQuality() {
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn--;
+    for (let item of this.items) {
+      if (item.name != Type.Sulfuras) {
+        item.sellIn--;
       }
-      switch(this.items[i].name) {
-        case 'Aged Brie':
-          this.updateAgedBrie(this.items[i]);
+      switch(item.name) {
+        case Type.Brie:
+          this.updateAgedBrie(item);
           break;
-        case 'Backstage passes to a TAFKAL80ETC concert':
-          this.updateBackstagePass(this.items[i]);
+        case Type.Backstage:
+          this.updateBackstagePass(item);
           break;
-        case 'Sulfuras, Hand of Ragnaros':
+        case Type.Sulfuras:
           break;
-        case 'Conjured':
-          this.updateConjured(this.items[i]);
+        case Type.Conjured:
+          this.updateConjured(item);
           break;
         default:
-          this.updateDefault(this.items[i]);
+          this.updateDefault(item);
           break;
       }
 
-      this.items[i].quality = this.min(50, this.max(0, this.items[i].quality));
+      item.quality = Math.min(50, Math.max(0, item.quality));
     }
     return this.items;
   }
