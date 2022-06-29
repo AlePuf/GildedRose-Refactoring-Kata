@@ -25,6 +25,42 @@ export class GildedRose {
     return (a > b) ? a : b;
   }
 
+  updateAgedBrie(item: Item) {
+    if (item.sellIn < 0) {
+      item.quality += 2;
+    } else {
+      item.quality++;
+    }
+  }
+
+  updateBackstagePass(item: Item) {
+    if (item.sellIn > 10) {
+      item.quality++;
+    } else if (item.sellIn > 5) {
+      item.quality += 2;
+    } else if (item.sellIn > 0) {
+      item.quality += 3;
+    } else {
+      item.quality = 0;
+    }
+  }
+
+  updateConjured(item: Item) {
+    if (item.sellIn > 0) {
+      item.quality -= 2;
+    } else {
+      item.quality -= 4;
+    }
+  }
+
+  updateDefault(item: Item) {
+    if (item.sellIn > 0) {
+      item.quality--;
+    } else {
+      item.quality -= 2;
+    }
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
@@ -32,38 +68,18 @@ export class GildedRose {
       }
       switch(this.items[i].name) {
         case 'Aged Brie':
-          if (this.items[i].sellIn < 0) {
-            this.items[i].quality += 2;
-          } else {
-            this.items[i].quality++;
-          }
+          this.updateAgedBrie(this.items[i]);
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          if (this.items[i].sellIn > 10) {
-            this.items[i].quality++;
-          } else if (this.items[i].sellIn > 5) {
-            this.items[i].quality += 2;
-          } else if (this.items[i].sellIn > 0) {
-            this.items[i].quality += 3;
-          } else {
-            this.items[i].quality = 0;
-          }
+          this.updateBackstagePass(this.items[i]);
           break;
         case 'Sulfuras, Hand of Ragnaros':
           break;
         case 'Conjured':
-          if (this.items[i].sellIn > 0) {
-            this.items[i].quality -= 2;
-          } else {
-            this.items[i].quality -= 4;
-          }
+          this.updateConjured(this.items[i]);
           break;
         default:
-          if (this.items[i].sellIn > 0) {
-            this.items[i].quality--;
-          } else {
-            this.items[i].quality -= 2;
-          }
+          this.updateDefault(this.items[i]);
           break;
       }
 
